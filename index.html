@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anatomie 1</title>
+<meta name="description" content="Dagelijkse spaced-repetition oefenkaarten voor Anatomie 1 (onderste lidmaat).">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,450;9..144,560;9..144,650&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#F3EEE1;
+    --surface:#FFFFFF;
+    --surface-2:#FAF6EA;
+    --line:#E1D6BD;
+    --ink:#202E2C;
+    --ink-soft:#5C6B67;
+    --ink-faint:#8B9591;
+    --accent:#B24C2F;
+    --accent-ink:#FFFFFF;
+    --accent-soft:#F0D9C9;
+    --accent-soft-ink:#7A3620;
+    --good:#3E7A5B;
+    --good-soft:#D9E9DE;
+    --bad:#B24C2F;
+    --bad-soft:#F0D9C9;
+    --ramp-1:#C7DCD1;
+    --ramp-2:#7FAE97;
+    --ramp-3:#3E7267;
+    --shadow: 0 1px 2px rgba(32,46,44,.06), 0 6px 20px -8px rgba(32,46,44,.18);
+    padding-top:env(safe-area-inset-top, 0px);
+    padding-bottom:env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#161D1B;
+      --surface:#1E2624;
+      --surface-2:#222B28;
+      --line:#313B37;
+      --ink:#ECE6D6;
+      --ink-soft:#AEB6AF;
+      --ink-faint:#78827C;
+      --accent:#E2825F;
+      --accent-ink:#1B1310;
+      --accent-soft:#3A2B22;
+      --accent-soft-ink:#F0C4A9;
+      --good:#77B896;
+      --good-soft:#233A2F;
+      --bad:#E2825F;
+      --bad-soft:#3A2B22;
+      --ramp-1:#2C3B35;
+      --ramp-2:#4B7C67;
+      --ramp-3:#77B896;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px -10px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#161D1B;
+    --surface:#1E2624;
+    --surface-2:#222B28;
+    --line:#313B37;
+    --ink:#ECE6D6;
+    --ink-soft:#AEB6AF;
+    --ink-faint:#78827C;
+    --accent:#E2825F;
+    --accent-ink:#1B1310;
+    --accent-soft:#3A2B22;
+    --accent-soft-ink:#F0C4A9;
+    --good:#77B896;
+    --good-soft:#233A2F;
+    --bad:#E2825F;
+    --bad-soft:#3A2B22;
+    --ramp-1:#2C3B35;
+    --ramp-2:#4B7C67;
+    --ramp-3:#77B896;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px -10px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;}
+  html{-webkit-text-size-adjust:100%;}
+  button, select, a{touch-action:manipulation;}
+  img{max-width:100%;}
+  [hidden]{display:none !important;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Work Sans", system-ui, -apple-system, sans-serif;
+    padding-inline:16px;
+    max-width:560px;
+    margin:0 auto;
+  }
+  h1,h2,h3{font-family:"Fraunces", Georgia, serif; text-wrap:balance; margin:0;}
+  .mono{font-family:"IBM Plex Mono", ui-monospace, monospace; font-variant-numeric:tabular-nums;}
+  button{font-family:inherit;}
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.68rem;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+  }
+
+  /* ---------- topbar ---------- */
+  .topbar{
+    position:sticky;
+    top:env(safe-area-inset-top, 0px);
+    background:var(--paper);
+    padding-block:14px 10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    margin-bottom:18px;
+    z-index:5;
+  }
+  .wordmark{font-size:1.3rem; font-weight:650; letter-spacing:-.01em;}
+  .wordmark small{
+    display:block;
+    font-family:"Work Sans",sans-serif;
+    font-size:.64rem;
+    font-weight:500;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-top:1px;
+  }
+  .streak-chip{
+    display:flex; align-items:center; gap:5px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 11px 6px 8px;
+  }
+  .streak-chip .n{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:.92rem;}
+  .flame{width:15px; height:15px; flex-shrink:0;}
+
+  /* ---------- home ---------- */
+  .stat-row{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px;}
+  .stat-tile{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:13px 12px;
+    box-shadow:var(--shadow);
+  }
+  .stat-tile .num{font-family:"IBM Plex Mono",monospace; font-size:1.55rem; font-weight:600; line-height:1;}
+  .stat-tile .lbl{font-size:.72rem; color:var(--ink-soft); margin-top:5px; line-height:1.25;}
+
+  .panel{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:16px;
+    margin-bottom:16px;
+    box-shadow:var(--shadow);
+  }
+  .panel h3{font-size:1rem; font-weight:560; margin-bottom:10px;}
+
+  .mastery-bar{
+    display:flex;
+    height:12px;
+    border-radius:999px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:var(--surface-2);
+  }
+  .mastery-bar > span{height:100%;}
+  .mastery-legend{
+    display:flex; flex-wrap:wrap; gap:10px 16px;
+    margin-top:11px;
+  }
+  .mastery-legend .item{display:flex; align-items:center; gap:6px; font-size:.76rem; color:var(--ink-soft);}
+  .mastery-legend .dot{width:9px; height:9px; border-radius:3px; flex-shrink:0;}
+  .mastery-legend .cnt{font-family:"IBM Plex Mono",monospace; color:var(--ink); font-weight:500;}
+
+  select#categorySelect{
+    width:100%;
+    padding:11px 12px;
+    border-radius:11px;
+    border:1px solid var(--line);
+    background:var(--surface-2);
+    color:var(--ink);
+    font-size:16px;
+    font-family:inherit;
+    appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235C6B67' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 12px center;
+    padding-right:34px;
+  }
+  .field-label{font-size:.76rem; color:var(--ink-soft); margin-bottom:6px; display:block;}
+
+  .btn{
+    border:none;
+    border-radius:13px;
+    padding:15px 18px;
+    font-size:.98rem;
+    font-weight:600;
+    cursor:pointer;
+    width:100%;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    transition:transform .08s ease, opacity .15s ease;
+  }
+  .btn:active{transform:scale(.98);}
+  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .btn-primary{background:var(--accent); color:var(--accent-ink);}
+  .btn-secondary{background:var(--surface-2); color:var(--ink); border:1px solid var(--line);}
+  .btn-good{background:var(--good); color:#0E1F17;}
+  .btn-bad{background:var(--bad); color:var(--accent-ink);}
+  .btn-ghost{background:transparent; color:var(--ink-soft); font-weight:600; font-size:.8rem; padding:10px 13px; min-height:40px; width:auto; display:inline-flex; align-items:center; border-radius:9px;}
+  .btn-ghost:active{background:var(--surface-2);}
+  .start-sub{font-size:.76rem; color:var(--ink-faint); text-align:center; margin-top:9px;}
+
+  .footnote{font-size:.74rem; color:var(--ink-faint); text-align:center; margin:6px 0;}
+
+  .sticky-actions{
+    position:sticky;
+    bottom:0;
+    background:var(--paper);
+    border-top:1px solid var(--line);
+    padding-block:12px 14px;
+    padding-bottom:calc(14px + env(safe-area-inset-bottom, 0px));
+    margin-top:2px;
+    z-index:4;
+  }
+
+  /* ---------- study screen ---------- */
+  #studyScreen{padding-bottom:24px;}
+  .study-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
+  .study-progress-txt{font-size:.76rem; color:var(--ink-soft); font-family:"IBM Plex Mono",monospace;}
+  .timer{font-family:"IBM Plex Mono",monospace; font-size:.85rem; font-weight:600; display:flex; align-items:center; gap:5px;}
+  .timer.low{color:var(--accent);}
+  .progress-track{height:5px; background:var(--line); border-radius:999px; overflow:hidden; margin-bottom:16px;}
+  .progress-fill{height:100%; background:var(--accent); border-radius:999px; transition:width .25s ease;}
+
+  .timeup-banner{
+    background:var(--accent-soft);
+    color:var(--accent-soft-ink);
+    border-radius:12px;
+    padding:10px 12px;
+    font-size:.82rem;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    margin-bottom:14px;
+    flex-wrap:wrap;
+  }
+  .timeup-banner .actions{display:flex; gap:8px;}
+  .timeup-banner button{
+    font-family:inherit; font-size:.78rem; font-weight:600; border:none; border-radius:8px;
+    padding:9px 13px; min-height:38px; cursor:pointer; background:var(--accent); color:var(--accent-ink);
+  }
+  .timeup-banner button.ghost{background:transparent; color:var(--accent-soft-ink); text-decoration:underline;}
+
+  .cat-chip{
+    display:inline-block;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:.68rem;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    background:var(--accent-soft);
+    color:var(--accent-soft-ink);
+    padding:5px 10px;
+    border-radius:999px;
+    margin-bottom:12px;
+  }
+
+  .card-surface{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:26px 22px;
+    min-height:230px;
+    display:flex;
+    flex-direction:column;
+    box-shadow:var(--shadow);
+    margin-bottom:14px;
+  }
+  .card-q{
+    font-family:"Fraunces", Georgia, serif;
+    font-size:1.3rem;
+    font-weight:500;
+    line-height:1.36;
+    text-wrap:balance;
+    flex-grow:1;
+  }
+  .recall-box{margin-top:16px;}
+  .recall-box textarea{
+    width:100%;
+    min-height:54px;
+    resize:vertical;
+    background:var(--surface-2);
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:10px 11px;
+    color:var(--ink-soft);
+    font-family:"Work Sans",sans-serif;
+    font-size:16px;
+  }
+  .recall-box textarea:focus{outline:none; border-color:var(--accent); color:var(--ink);}
+  .answer-wrap{margin-top:18px; padding-top:16px; border-top:1px solid var(--line);}
+  .answer-label{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:.68rem; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--good); margin-bottom:7px; display:block; font-weight:600;
+  }
+  .card-a{font-size:1.02rem; line-height:1.5; color:var(--ink);}
+
+  .grade-row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .grade-row .btn{min-height:56px; font-size:1rem;}
+
+  .end-panel{text-align:center; padding-top:8px;}
+  .end-panel h2{font-size:1.7rem; margin-bottom:6px;}
+  .end-panel .sub{color:var(--ink-soft); font-size:.92rem; margin-bottom:22px;}
+  .end-stats{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:22px;}
+  .end-stats .stat-tile .num{font-size:1.35rem;}
+
+  @media (max-width:360px){
+    .stat-row{grid-template-columns:repeat(3,1fr); gap:7px;}
+    .stat-tile{padding:10px 8px;}
+    .stat-tile .num{font-size:1.3rem;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wordmark">Anatomie 1<small>Onderste lidmaat</small></div>
+  <div class="streak-chip" id="streakChip">
+    <svg class="flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)">
+      <path d="M12 2c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1-1-2-1-2 2 1 3 3 3 5a5 5 0 0 1-10 0c0-5 4-6 5-11z"/>
+    </svg>
+    <span class="n mono" id="streakNum">0</span>
+  </div>
+</div>
+
+<!-- ============ HOME ============ -->
+<div id="homeScreen">
+  <div class="stat-row">
+    <div class="stat-tile">
+      <div class="num mono" id="statDue">0</div>
+      <div class="lbl">te herhalen<br>vandaag</div>
+    </div>
+    <div class="stat-tile">
+      <div class="num mono" id="statNew">0</div>
+      <div class="lbl">nieuwe<br>kaarten</div>
+    </div>
+    <div class="stat-tile">
+      <div class="num mono" id="statMastered">0%</div>
+      <div class="lbl">onder de<br>knie</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Voortgang</h3>
+    <div class="mastery-bar" id="masteryBar"></div>
+    <div class="mastery-legend" id="masteryLegend"></div>
+  </div>
+
+  <div class="panel">
+    <span class="field-label">Onderdeel oefenen</span>
+    <select id="categorySelect"></select>
+  </div>
+
+  <p class="footnote" id="syncNote">&nbsp;</p>
+
+  <div class="sticky-actions">
+    <button class="btn btn-primary" id="startBtn">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+      Start sessie - 15 min
+    </button>
+    <div class="start-sub" id="startSub">klaar om te beginnen</div>
+  </div>
+</div>
+
+<!-- ============ STUDY ============ -->
+<div id="studyScreen" hidden>
+  <div class="study-head">
+    <span class="study-progress-txt" id="studyProgressTxt">kaart 1 / 10</span>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div class="timer mono" id="timerTxt">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+        15:00
+      </div>
+      <button class="btn-ghost" id="stopBtn">stoppen</button>
+    </div>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+  <div class="timeup-banner" id="timeupBanner" hidden>
+    <span>15 min bereikt — mooi geoefend!</span>
+    <div class="actions">
+      <button id="extendBtn" class="ghost">nog 5 min</button>
+      <button id="finishNowBtn">afronden</button>
+    </div>
+  </div>
+
+  <span class="cat-chip" id="catChip">Categorie</span>
+
+  <div class="card-surface">
+    <div class="card-q" id="cardQ">Vraag komt hier</div>
+
+    <div class="recall-box" id="recallBox">
+      <textarea id="recallInput" placeholder="Typ hier (optioneel) je antwoord om jezelf actief te testen..."></textarea>
+    </div>
+
+    <div class="answer-wrap" id="answerWrap" hidden>
+      <span class="answer-label">Antwoord</span>
+      <div class="card-a" id="cardA">Antwoord komt hier</div>
+    </div>
+  </div>
+
+  <div class="sticky-actions">
+    <button class="btn btn-secondary" id="revealBtn">Toon antwoord</button>
+
+    <div class="grade-row" id="gradeRow" hidden>
+      <button class="btn btn-bad" id="wrongBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        Wist ik niet
+      </button>
+      <button class="btn btn-good" id="rightBtn">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Wist ik
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ END ============ -->
+<div id="endScreen" hidden>
+  <div class="end-panel">
+    <h2 id="endTitle">Sessie voltooid</h2>
+    <p class="sub" id="endSub">Mooi geoefend.</p>
+    <div class="end-stats">
+      <div class="stat-tile"><div class="num mono" id="endSeen">0</div><div class="lbl">kaarten<br>geoefend</div></div>
+      <div class="stat-tile"><div class="num mono" id="endCorrect">0</div><div class="lbl">meteen<br>goed</div></div>
+      <div class="stat-tile"><div class="num mono" id="endMinutes">0</div><div class="lbl">minuten<br>geoefend</div></div>
+    </div>
+    <button class="btn btn-primary" id="backBtn">Terug naar overzicht</button>
+  </div>
+</div>
+
+<script src="cards.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var ALL_CARDS = window.STUDY_CARDS;
+  var CATEGORIES = window.STUDY_CATEGORIES;
+  var CARD_BY_ID = {};
+  ALL_CARDS.forEach(function(c){ CARD_BY_ID[c.id] = c; });
+  var CAT_LABEL = {};
+  CATEGORIES.forEach(function(c){ CAT_LABEL[c.id] = c.label; });
+
+  var BOX_INTERVALS = [0,1,3,7,14,30]; // dagen tot volgende herhaling per box
+  var NEW_PER_SESSION = 15;
+  var SESSION_MS = 15*60*1000;
+  var REQUEUE_OFFSET = 6;
+
+  // ---------------- datumhelpers ----------------
+  function pad(n){ return n<10 ? "0"+n : ""+n; }
+  function todayStr(){
+    var d = new Date();
+    return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  }
+  function addDays(dateStr, n){
+    var parts = dateStr.split("-").map(Number);
+    var d = new Date(parts[0], parts[1]-1, parts[2]);
+    d.setDate(d.getDate()+n);
+    return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  }
+  function yesterdayOf(dateStr){ return addDays(dateStr, -1); }
+
+  // ---------------- store (localStorage; window.claude bestaat hier niet) ----------------
+  var LOCAL_KEY = "spiergeheugen_v1";
+  var Store = {
+    mode: "local",
+    db: null,
+    async init(){
+      try{
+        if (window.claude && window.claude.use){
+          var db = await window.claude.use("db");
+          if (db){ this.db = db; this.mode = "db"; return; }
+        }
+      }catch(e){ /* val terug op local */ }
+      this.mode = "local";
+    },
+    async loadAll(){
+      if (this.mode === "db"){
+        try{
+          var progress = {};
+          var snap = await this.db.collection("progress").get();
+          snap.docs.forEach(function(d){ if(d.exists) progress[d.id] = d.data(); });
+          var statsSnap = await this.db.doc("meta/stats").get();
+          var stats = statsSnap.exists ? statsSnap.data() : defaultStats();
+          return { progress: progress, stats: stats };
+        }catch(e){
+          this.mode = "local"; // val terug bij fout
+        }
+      }
+      try{
+        var raw = localStorage.getItem(LOCAL_KEY);
+        if (raw){ return JSON.parse(raw); }
+      }catch(e){}
+      return { progress:{}, stats: defaultStats() };
+    },
+    async saveProgress(id, data){
+      if (this.mode === "db"){
+        try{ await this.db.collection("progress").doc(id).set(data); return; }
+        catch(e){ this.mode = "local"; }
+      }
+      this._localSaveProgress(id, data);
+    },
+    async saveStats(data){
+      if (this.mode === "db"){
+        try{ await this.db.doc("meta/stats").set(data); return; }
+        catch(e){ this.mode = "local"; }
+      }
+      this._localSaveStats(data);
+    },
+    _localSaveProgress(id, data){
+      try{
+        var raw = localStorage.getItem(LOCAL_KEY);
+        var state = raw ? JSON.parse(raw) : { progress:{}, stats: defaultStats() };
+        state.progress[id] = data;
+        localStorage.setItem(LOCAL_KEY, JSON.stringify(state));
+      }catch(e){}
+    },
+    _localSaveStats(data){
+      try{
+        var raw = localStorage.getItem(LOCAL_KEY);
+        var state = raw ? JSON.parse(raw) : { progress:{}, stats: defaultStats() };
+        state.stats = data;
+        localStorage.setItem(LOCAL_KEY, JSON.stringify(state));
+      }catch(e){}
+    }
+  };
+  function defaultStats(){
+    return { streak:0, lastSessionDate:null, totalSessions:0, totalReviewed:0, totalCorrect:0 };
+  }
+
+  // ---------------- applicatiestatus ----------------
+  var progress = {};   // id -> {box, due, correct, wrong, lastSeen}
+  var stats = defaultStats();
+  var session = null;
+
+  var homeScreen = document.getElementById("homeScreen");
+  var studyScreen = document.getElementById("studyScreen");
+  var endScreen = document.getElementById("endScreen");
+
+  function catCounts(){
+    var counts = {};
+    ALL_CARDS.forEach(function(c){ counts[c.cat] = (counts[c.cat]||0)+1; });
+    return counts;
+  }
+
+  function populateCategorySelect(){
+    var sel = document.getElementById("categorySelect");
+    sel.innerHTML = "";
+    var counts = catCounts();
+    var optAll = document.createElement("option");
+    optAll.value = "all";
+    optAll.textContent = "Alle onderdelen (" + ALL_CARDS.length + " kaarten)";
+    sel.appendChild(optAll);
+    CATEGORIES.forEach(function(c){
+      var opt = document.createElement("option");
+      opt.value = c.id;
+      opt.textContent = c.label + " (" + (counts[c.id]||0) + ")";
+      sel.appendChild(opt);
+    });
+  }
+
+  function dueCardsFor(catFilter){
+    var today = todayStr();
+    var list = [];
+    Object.keys(progress).forEach(function(id){
+      var p = progress[id];
+      var card = CARD_BY_ID[id];
+      if (!card) return;
+      if (catFilter !== "all" && card.cat !== catFilter) return;
+      if (p.due <= today) list.push({ card:card, p:p });
+    });
+    list.sort(function(a,b){
+      if (a.p.box !== b.p.box) return a.p.box - b.p.box;
+      return a.p.due < b.p.due ? -1 : (a.p.due > b.p.due ? 1 : 0);
+    });
+    return list.map(function(x){ return x.card; });
+  }
+
+  function newCardsFor(catFilter, limit){
+    var list = ALL_CARDS.filter(function(c){
+      if (progress[c.id]) return false;
+      if (catFilter !== "all" && c.cat !== catFilter) return false;
+      return true;
+    });
+    return list.slice(0, limit);
+  }
+
+  function masteredCount(catFilter){
+    var n = 0;
+    ALL_CARDS.forEach(function(c){
+      if (catFilter !== "all" && c.cat !== catFilter) return;
+      var p = progress[c.id];
+      if (p && p.box >= 5) n++;
+    });
+    return n;
+  }
+
+  function refreshHome(){
+    var catFilter = document.getElementById("categorySelect").value || "all";
+    var due = dueCardsFor(catFilter);
+    var fresh = newCardsFor(catFilter, NEW_PER_SESSION);
+    var totalInCat = catFilter === "all" ? ALL_CARDS.length : ALL_CARDS.filter(function(c){return c.cat===catFilter;}).length;
+    var mastered = masteredCount(catFilter);
+
+    document.getElementById("statDue").textContent = due.length;
+    document.getElementById("statNew").textContent = fresh.length;
+    document.getElementById("statMastered").textContent = totalInCat ? Math.round(100*mastered/totalInCat)+"%" : "0%";
+
+    var readyCount = due.length + fresh.length;
+    var startSub = document.getElementById("startSub");
+    if (readyCount === 0){
+      startSub.textContent = "niets te herhalen nu — kom later terug, of kies hieronder extra oefenkaarten";
+    } else {
+      startSub.textContent = readyCount + " kaart" + (readyCount===1?"":"en") + " klaar om te oefenen";
+    }
+
+    renderMasteryBar(catFilter, totalInCat);
+
+    document.getElementById("streakNum").textContent = stats.streak || 0;
+
+    var note = document.getElementById("syncNote");
+    note.textContent = Store.mode === "db"
+      ? "Je voortgang wordt bewaard bij je account."
+      : "Je voortgang wordt lokaal in deze browser bewaard.";
+  }
+
+  function renderMasteryBar(catFilter, totalInCat){
+    var buckets = { nieuw:0, leren:0, groeien:0, meester:0 };
+    ALL_CARDS.forEach(function(c){
+      if (catFilter !== "all" && c.cat !== catFilter) return;
+      var p = progress[c.id];
+      if (!p) buckets.nieuw++;
+      else if (p.box <= 1) buckets.leren++;
+      else if (p.box <= 3) buckets.groeien++;
+      else buckets.meester++;
+    });
+    var total = Math.max(1, totalInCat);
+    var bar = document.getElementById("masteryBar");
+    var segs = [
+      { key:"nieuw",   label:"Nog niet gezien", color:"var(--line)",  count:buckets.nieuw },
+      { key:"leren",   label:"Aan het leren",   color:"var(--ramp-1)",count:buckets.leren },
+      { key:"groeien", label:"Op weg",          color:"var(--ramp-2)",count:buckets.groeien },
+      { key:"meester", label:"Onder de knie",   color:"var(--ramp-3)",count:buckets.meester }
+    ];
+    bar.innerHTML = "";
+    segs.forEach(function(s){
+      if (s.count <= 0) return;
+      var span = document.createElement("span");
+      span.style.width = (100*s.count/total) + "%";
+      span.style.background = s.color;
+      bar.appendChild(span);
+    });
+    var legend = document.getElementById("masteryLegend");
+    legend.innerHTML = "";
+    segs.forEach(function(s){
+      var item = document.createElement("div");
+      item.className = "item";
+      item.innerHTML = '<span class="dot" style="background:'+s.color+'"></span>' + s.label + ' <span class="cnt">' + s.count + '</span>';
+      legend.appendChild(item);
+    });
+  }
+
+  // ---------------- studiesessie ----------------
+  function buildQueue(catFilter){
+    var due = dueCardsFor(catFilter);
+    var fresh = newCardsFor(catFilter, NEW_PER_SESSION);
+    var queue = due.concat(fresh);
+    if (queue.length === 0){
+      // bonus: niets meer te doen -> oefen alvast wat al gekend is
+      var all = ALL_CARDS.filter(function(c){
+        if (catFilter !== "all" && c.cat !== catFilter) return false;
+        return !!progress[c.id];
+      });
+      all.sort(function(a,b){
+        var da = progress[a.id].due, db = progress[b.id].due;
+        return da < db ? -1 : (da > db ? 1 : 0);
+      });
+      queue = all.slice(0, 20);
+    }
+    return queue;
+  }
+
+  function startSession(){
+    var catFilter = document.getElementById("categorySelect").value || "all";
+    var queue = buildQueue(catFilter);
+    if (queue.length === 0){
+      alert("Er zijn nog geen kaarten om te oefenen in dit onderdeel.");
+      return;
+    }
+    session = {
+      queue: queue,
+      index: 0,
+      startedAt: Date.now(),
+      timeUp: false,
+      extendedMs: 0,
+      requeued: {},
+      seen: 0,
+      correct: 0,
+      wrong: 0
+    };
+    homeScreen.hidden = true;
+    endScreen.hidden = true;
+    studyScreen.hidden = false;
+    document.getElementById("timeupBanner").hidden = true;
+    startTimerLoop();
+    showCurrentCard();
+  }
+
+  var timerInterval = null;
+  function startTimerLoop(){
+    if (timerInterval) clearInterval(timerInterval);
+    tickTimer();
+    timerInterval = setInterval(tickTimer, 1000);
+  }
+  function stopTimerLoop(){
+    if (timerInterval){ clearInterval(timerInterval); timerInterval = null; }
+  }
+  function tickTimer(){
+    if (!session) return;
+    var limit = SESSION_MS + session.extendedMs;
+    var remaining = limit - (Date.now() - session.startedAt);
+    var txt = document.getElementById("timerTxt");
+    if (remaining <= 0){
+      txt.classList.add("low");
+      txt.lastChild.textContent = " 0:00";
+      if (!session.timeUp){
+        session.timeUp = true;
+        document.getElementById("timeupBanner").hidden = false;
+      }
+      return;
+    }
+    txt.classList.toggle("low", remaining < 60000);
+    var s = Math.floor(remaining/1000);
+    var m = Math.floor(s/60);
+    var sec = s%60;
+    txt.lastChild.textContent = " " + m + ":" + pad(sec);
+  }
+
+  function showCurrentCard(){
+    if (!session) return;
+    if (session.index >= session.queue.length){
+      endSession();
+      return;
+    }
+    var card = session.queue[session.index];
+    document.getElementById("studyProgressTxt").textContent =
+      "kaart " + (session.index+1) + " / " + session.queue.length;
+    document.getElementById("progressFill").style.width =
+      Math.round(100*session.index/session.queue.length) + "%";
+    document.getElementById("catChip").textContent = CAT_LABEL[card.cat] || card.cat;
+    document.getElementById("cardQ").textContent = card.q;
+    document.getElementById("cardA").textContent = card.a;
+    document.getElementById("recallInput").value = "";
+    document.getElementById("answerWrap").hidden = true;
+    document.getElementById("recallBox").hidden = false;
+    document.getElementById("revealBtn").hidden = false;
+    document.getElementById("gradeRow").hidden = true;
+  }
+
+  function revealAnswer(){
+    document.getElementById("answerWrap").hidden = false;
+    document.getElementById("revealBtn").hidden = true;
+    document.getElementById("gradeRow").hidden = false;
+  }
+
+  async function grade(isCorrect){
+    var card = session.queue[session.index];
+    var today = todayStr();
+    var p = progress[card.id] || { box:0, due:today, correct:0, wrong:0, lastSeen:null };
+
+    if (isCorrect){
+      p.box = Math.min(p.box+1, 5);
+      p.due = addDays(today, BOX_INTERVALS[p.box]);
+      p.correct = (p.correct||0)+1;
+      session.correct++;
+    } else {
+      p.box = 0;
+      p.due = today;
+      p.wrong = (p.wrong||0)+1;
+      session.wrong++;
+      if (!session.requeued[card.id]){
+        session.requeued[card.id] = true;
+        var pos = Math.min(session.index + REQUEUE_OFFSET, session.queue.length);
+        session.queue.splice(pos, 0, card);
+      }
+    }
+    p.lastSeen = today;
+    progress[card.id] = p;
+    session.seen++;
+    Store.saveProgress(card.id, p);
+
+    session.index++;
+    if (session.timeUp){
+      endSession();
+    } else {
+      showCurrentCard();
+    }
+  }
+
+  async function endSession(){
+    stopTimerLoop();
+    var today = todayStr();
+    if (stats.lastSessionDate !== today){
+      if (stats.lastSessionDate === yesterdayOf(today)){
+        stats.streak = (stats.streak||0) + 1;
+      } else {
+        stats.streak = 1;
+      }
+      stats.lastSessionDate = today;
+    }
+    stats.totalSessions = (stats.totalSessions||0) + 1;
+    stats.totalReviewed = (stats.totalReviewed||0) + (session ? session.seen : 0);
+    stats.totalCorrect = (stats.totalCorrect||0) + (session ? session.correct : 0);
+    await Store.saveStats(stats);
+
+    var minutes = session ? Math.max(1, Math.round((Date.now()-session.startedAt)/60000)) : 0;
+    document.getElementById("endSeen").textContent = session ? session.seen : 0;
+    document.getElementById("endCorrect").textContent = session ? session.correct : 0;
+    document.getElementById("endMinutes").textContent = minutes;
+
+    var title = document.getElementById("endTitle");
+    var sub = document.getElementById("endSub");
+    if (!session || session.seen === 0){
+      title.textContent = "Tot snel";
+      sub.textContent = "Geen kaarten geoefend deze keer.";
+    } else if (stats.streak >= 2){
+      title.textContent = "Sessie voltooid";
+      sub.textContent = stats.streak + " dagen op rij geoefend — knap volgehouden.";
+    } else {
+      title.textContent = "Sessie voltooid";
+      sub.textContent = "Mooi geoefend. Kom morgen terug voor de volgende ronde.";
+    }
+
+    studyScreen.hidden = true;
+    endScreen.hidden = false;
+    session = null;
+  }
+
+  function backToHome(){
+    stopTimerLoop();
+    session = null;
+    studyScreen.hidden = true;
+    endScreen.hidden = true;
+    homeScreen.hidden = false;
+    refreshHome();
+  }
+
+  // ---------------- events ----------------
+  document.getElementById("startBtn").addEventListener("click", startSession);
+  document.getElementById("revealBtn").addEventListener("click", revealAnswer);
+  document.getElementById("wrongBtn").addEventListener("click", function(){ grade(false); });
+  document.getElementById("rightBtn").addEventListener("click", function(){ grade(true); });
+  document.getElementById("stopBtn").addEventListener("click", function(){
+    if (session && session.seen > 0){ endSession(); }
+    else { backToHome(); }
+  });
+  document.getElementById("finishNowBtn").addEventListener("click", function(){ endSession(); });
+  document.getElementById("extendBtn").addEventListener("click", function(){
+    if (!session) return;
+    session.extendedMs += 5*60*1000;
+    session.timeUp = false;
+    document.getElementById("timeupBanner").hidden = true;
+    tickTimer();
+  });
+  document.getElementById("backBtn").addEventListener("click", backToHome);
+  document.getElementById("categorySelect").addEventListener("change", refreshHome);
+
+  // ---------------- opstart ----------------
+  async function boot(){
+    populateCategorySelect();
+    await Store.init();
+    var data = await Store.loadAll();
+    progress = data.progress || {};
+    stats = data.stats || defaultStats();
+    refreshHome();
+  }
+  boot();
+})();
+</script>
+</body>
+</html>
