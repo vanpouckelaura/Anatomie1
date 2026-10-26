@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Eigen vragenlijst Anatomie 1, per hoofdstuk, met afbeeldingen.">
+<title>Anatomie 1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,450;9..144,560;9..144,650&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#F3EEE1;
+    --surface:#FFFFFF;
+    --surface-2:#FAF6EA;
+    --line:#E1D6BD;
+    --ink:#202E2C;
+    --ink-soft:#5C6B67;
+    --ink-faint:#8B9591;
+    --accent:#B24C2F;
+    --accent-ink:#FFFFFF;
+    --accent-soft:#F0D9C9;
+    --accent-soft-ink:#7A3620;
+    --good:#3E7A5B;
+    --good-soft:#D9E9DE;
+    --bad:#B24C2F;
+    --bad-soft:#F0D9C9;
+    --warn-soft:#F3E3B8;
+    --warn-ink:#7A5B12;
+    --shadow: 0 1px 2px rgba(32,46,44,.06), 0 6px 20px -8px rgba(32,46,44,.18);
+    padding-top:env(safe-area-inset-top, 0px);
+    padding-bottom:env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#161D1B;
+      --surface:#1E2624;
+      --surface-2:#222B28;
+      --line:#313B37;
+      --ink:#ECE6D6;
+      --ink-soft:#AEB6AF;
+      --ink-faint:#78827C;
+      --accent:#E2825F;
+      --accent-ink:#1B1310;
+      --accent-soft:#3A2B22;
+      --accent-soft-ink:#F0C4A9;
+      --good:#77B896;
+      --good-soft:#233A2F;
+      --bad:#E2825F;
+      --bad-soft:#3A2B22;
+      --warn-soft:#3A3420;
+      --warn-ink:#E0C878;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px -10px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#161D1B;
+    --surface:#1E2624;
+    --surface-2:#222B28;
+    --line:#313B37;
+    --ink:#ECE6D6;
+    --ink-soft:#AEB6AF;
+    --ink-faint:#78827C;
+    --accent:#E2825F;
+    --accent-ink:#1B1310;
+    --accent-soft:#3A2B22;
+    --accent-soft-ink:#F0C4A9;
+    --good:#77B896;
+    --good-soft:#233A2F;
+    --bad:#E2825F;
+    --bad-soft:#3A2B22;
+    --warn-soft:#3A3420;
+    --warn-ink:#E0C878;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px -10px rgba(0,0,0,.5);
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;}
+  html{-webkit-text-size-adjust:100%;}
+  button, select, a{touch-action:manipulation;}
+  [hidden]{display:none !important;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Work Sans", system-ui, -apple-system, sans-serif;
+    padding-inline:16px;
+    max-width:560px;
+    margin:0 auto;
+  }
+  h1,h2,h3{font-family:"Fraunces", Georgia, serif; text-wrap:balance; margin:0;}
+  .mono{font-family:"IBM Plex Mono", ui-monospace, monospace; font-variant-numeric:tabular-nums;}
+  button{font-family:inherit;}
+  img{max-width:100%;}
+
+  /* ---------- topbar ---------- */
+  .topbar{
+    position:sticky;
+    top:env(safe-area-inset-top, 0px);
+    background:var(--paper);
+    padding-block:14px 10px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    margin-bottom:18px;
+    z-index:5;
+  }
+  .wordmark{font-size:1.3rem; font-weight:650; letter-spacing:-.01em;}
+  .wordmark small{
+    display:block;
+    font-family:"Work Sans",sans-serif;
+    font-size:.64rem;
+    font-weight:500;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-top:1px;
+  }
+
+  /* ---------- home: chapter list ---------- */
+  .intro-note{font-size:.84rem; color:var(--ink-soft); line-height:1.45; margin:0 0 18px;}
+  .chapter-list{display:flex; flex-direction:column; gap:10px; margin-bottom:24px;}
+  .chapter-tile{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:15px 16px;
+    box-shadow:var(--shadow);
+    text-align:left;
+    width:100%;
+    cursor:pointer;
+  }
+  .chapter-tile:active{transform:scale(.99);}
+  .chapter-num{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:.78rem;
+    font-weight:600;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border-radius:9px;
+    min-width:34px;
+    height:34px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .chapter-body{flex-grow:1; min-width:0;}
+  .chapter-title{display:block; font-weight:600; font-size:.96rem; line-height:1.3;}
+  .chapter-meta{display:block; font-size:.76rem; color:var(--ink-soft); margin-top:3px;}
+  .chapter-meta .warn{color:var(--warn-ink);}
+  .chapter-chevron{color:var(--ink-faint); flex-shrink:0;}
+
+  .footnote{font-size:.74rem; color:var(--ink-faint); text-align:center; margin:6px 0 28px;}
+
+  /* ---------- study screen ---------- */
+  #studyScreen{padding-bottom:24px;}
+  .study-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
+  .study-progress-txt{font-size:.76rem; color:var(--ink-soft); font-family:"IBM Plex Mono",monospace;}
+  .timer{font-family:"IBM Plex Mono",monospace; font-size:.85rem; font-weight:600; display:flex; align-items:center; gap:5px; color:var(--ink-soft);}
+  .progress-track{height:5px; background:var(--line); border-radius:999px; overflow:hidden; margin-bottom:16px;}
+  .progress-fill{height:100%; background:var(--good); border-radius:999px; transition:width .25s ease;}
+
+  .cat-chip{
+    display:inline-block;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:.68rem;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    background:var(--accent-soft);
+    color:var(--accent-soft-ink);
+    padding:5px 10px;
+    border-radius:999px;
+    margin-bottom:12px;
+  }
+
+  .card-surface{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:22px 20px;
+    min-height:230px;
+    display:flex;
+    flex-direction:column;
+    box-shadow:var(--shadow);
+    margin-bottom:14px;
+  }
+  .card-q{
+    font-family:"Fraunces", Georgia, serif;
+    font-size:1.25rem;
+    font-weight:500;
+    line-height:1.36;
+    text-wrap:balance;
+  }
+  .card-img{
+    display:block;
+    width:100%;
+    border-radius:12px;
+    border:1px solid var(--line);
+    margin:14px 0;
+    background:var(--surface-2);
+  }
+  .img-missing{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    background:var(--warn-soft);
+    color:var(--warn-ink);
+    border-radius:12px;
+    padding:12px 13px;
+    font-size:.8rem;
+    line-height:1.4;
+    margin:14px 0;
+  }
+  .img-missing svg{flex-shrink:0;}
+
+  .recall-box{margin-top:4px;}
+  .recall-box textarea{
+    width:100%;
+    min-height:54px;
+    resize:vertical;
+    background:var(--surface-2);
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:10px 11px;
+    color:var(--ink-soft);
+    font-family:"Work Sans",sans-serif;
+    font-size:16px;
+  }
+  .recall-box textarea:focus{outline:none; border-color:var(--accent); color:var(--ink);}
+  .answer-wrap{margin-top:16px; padding-top:16px; border-top:1px solid var(--line); flex-grow:1;}
+  .answer-label{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:.68rem; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--good); margin-bottom:9px; display:block; font-weight:600;
+  }
+  .card-a{font-size:1.02rem; line-height:1.55; color:var(--ink); white-space:pre-line;}
+
+  .btn{
+    border:none;
+    border-radius:13px;
+    padding:15px 18px;
+    font-size:.98rem;
+    font-weight:600;
+    cursor:pointer;
+    width:100%;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    transition:transform .08s ease, opacity .15s ease;
+  }
+  .btn:active{transform:scale(.98);}
+  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .btn-primary{background:var(--accent); color:var(--accent-ink);}
+  .btn-secondary{background:var(--surface-2); color:var(--ink); border:1px solid var(--line);}
+  .btn-good{background:var(--good); color:#0E1F17;}
+  .btn-bad{background:var(--bad); color:var(--accent-ink);}
+  .btn-ghost{background:transparent; color:var(--ink-soft); font-weight:600; font-size:.8rem; padding:10px 13px; min-height:40px; width:auto; display:inline-flex; align-items:center; border-radius:9px;}
+  .btn-ghost:active{background:var(--surface-2);}
+
+  .grade-row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .grade-row .btn{min-height:56px; font-size:1rem;}
+
+  .sticky-actions{
+    position:sticky;
+    bottom:0;
+    background:var(--paper);
+    border-top:1px solid var(--line);
+    padding-block:12px 14px;
+    padding-bottom:calc(14px + env(safe-area-inset-bottom, 0px));
+    margin-top:2px;
+    z-index:4;
+  }
+
+  .end-panel{text-align:center; padding-top:8px;}
+  .end-panel h2{font-size:1.7rem; margin-bottom:6px;}
+  .end-panel .sub{color:var(--ink-soft); font-size:.92rem; margin-bottom:22px;}
+  .end-stats{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:22px;}
+  .stat-tile{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:13px 10px;
+    box-shadow:var(--shadow);
+  }
+  .stat-tile .num{font-family:"IBM Plex Mono",monospace; font-size:1.35rem; font-weight:600; line-height:1;}
+  .stat-tile .lbl{font-size:.7rem; color:var(--ink-soft); margin-top:5px; line-height:1.25;}
+  .end-actions{display:flex; flex-direction:column; gap:10px;}
+
+  [hidden]{display:none !important;}
+</style>
+</head>
+<body>
+
+
+<div class="topbar">
+  <div class="wordmark">Anatomie 1<small>Onderste lidmaat</small></div>
+</div>
+
+<!-- ============ HOME ============ -->
+<div id="homeScreen">
+  <p class="intro-note">Kies een hoofdstuk. Je krijgt alle vragen uit dat hoofdstuk in willekeurige volgorde. Een fout antwoord komt later in de ronde nog eens terug, tot je het juist hebt.</p>
+  <div class="chapter-list" id="chapterList"></div>
+  <p class="footnote">Eigen vragenlijst, per hoofdstuk</p>
+</div>
+
+<!-- ============ STUDY ============ -->
+<div id="studyScreen" hidden>
+  <div class="study-head">
+    <span class="study-progress-txt" id="studyProgressTxt">0 / 0 juist</span>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div class="timer mono" id="timerTxt">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+        0:00
+      </div>
+      <button class="btn-ghost" id="stopBtn">stoppen</button>
+    </div>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+  <span class="cat-chip" id="catChip">Hoofdstuk</span>
+
+  <div class="card-surface">
+    <div class="card-q" id="cardQ">Vraag komt hier</div>
+    <div id="qImgWrap"></div>
+
+    <div class="recall-box" id="recallBox">
+      <textarea id="recallInput" placeholder="Typ hier (optioneel) je antwoord om jezelf actief te testen..."></textarea>
+    </div>
+
+    <div class="answer-wrap" id="answerWrap" hidden>
+      <span class="answer-label">Antwoord</span>
+      <div id="aImgWrap"></div>
+      <div class="card-a" id="cardA">Antwoord komt hier</div>
+    </div>
+  </div>
+
+  <div class="sticky-actions">
+    <button class="btn btn-secondary" id="revealBtn">Toon antwoord</button>
+
+    <div class="grade-row" id="gradeRow" hidden>
+      <button class="btn btn-bad" id="wrongBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        Wist ik niet
+      </button>
+      <button class="btn btn-good" id="rightBtn">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Wist ik
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ END ============ -->
+<div id="endScreen" hidden>
+  <div class="end-panel">
+    <h2 id="endTitle">Hoofdstuk afgerond</h2>
+    <p class="sub" id="endSub">Mooi gedaan.</p>
+    <div class="end-stats">
+      <div class="stat-tile"><div class="num mono" id="endTotal">0</div><div class="lbl">vragen</div></div>
+      <div class="stat-tile"><div class="num mono" id="endFirstTry">0</div><div class="lbl">meteen<br>juist</div></div>
+      <div class="stat-tile"><div class="num mono" id="endMinutes">0</div><div class="lbl">minuten<br>geoefend</div></div>
+    </div>
+    <div class="end-actions">
+      <button class="btn btn-primary" id="retryBtn">Opnieuw oefenen</button>
+      <button class="btn btn-secondary" id="backBtn">Terug naar overzicht</button>
+    </div>
+  </div>
+</div>
+
+<script src="cards.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var CARDS = window.CARDS;
+  var CHAPTERS = window.CHAPTERS.slice().sort(function(a,b){ return a.num - b.num; });
+  var CARDS_BY_CHAPTER = {};
+  CARDS.forEach(function(c){
+    (CARDS_BY_CHAPTER[c.chapter] = CARDS_BY_CHAPTER[c.chapter] || []).push(c);
+  });
+
+  var REQUEUE_OFFSET = 5;
+
+  var homeScreen = document.getElementById("homeScreen");
+  var studyScreen = document.getElementById("studyScreen");
+  var endScreen = document.getElementById("endScreen");
+
+  function pad(n){ return n<10 ? "0"+n : ""+n; }
+
+  function buildHome(){
+    var list = document.getElementById("chapterList");
+    list.innerHTML = "";
+    CHAPTERS.forEach(function(ch){
+      var cards = CARDS_BY_CHAPTER[ch.id] || [];
+      var missing = cards.filter(function(c){ return (c.qImgMissing||0)+(c.aImgMissing||0) > 0; }).length;
+      var tile = document.createElement("button");
+      tile.className = "chapter-tile";
+      var metaHtml = cards.length + " " + (cards.length===1 ? "vraag" : "vragen");
+      if (missing > 0){
+        metaHtml += ' <span class="warn">· ' + missing + ' zonder afbeelding</span>';
+      }
+      tile.innerHTML =
+        '<span class="chapter-num mono">' + ch.num + '</span>' +
+        '<span class="chapter-body">' +
+          '<span class="chapter-title">' + ch.title + '</span>' +
+          '<span class="chapter-meta">' + metaHtml + '</span>' +
+        '</span>' +
+        '<svg class="chapter-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>';
+      tile.addEventListener("click", function(){ startChapter(ch); });
+      list.appendChild(tile);
+    });
+  }
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i=a.length-1; i>0; i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var tmp=a[i]; a[i]=a[j]; a[j]=tmp;
+    }
+    return a;
+  }
+
+  var session = null;
+  var timerInterval = null;
+
+  function startChapter(chapter){
+    var cards = CARDS_BY_CHAPTER[chapter.id] || [];
+    if (cards.length === 0) return;
+    session = {
+      chapter: chapter,
+      queue: shuffle(cards),
+      index: 0,
+      total: cards.length,
+      cleared: {},
+      clearedCount: 0,
+      mistakeIds: {},
+      requeued: {},
+      startedAt: Date.now()
+    };
+    homeScreen.hidden = true;
+    endScreen.hidden = true;
+    studyScreen.hidden = false;
+    document.getElementById("catChip").textContent = "Hoofdstuk " + chapter.num + " - " + chapter.title;
+    startTimer();
+    showCurrentCard();
+  }
+
+  function startTimer(){
+    if (timerInterval) clearInterval(timerInterval);
+    tickTimer();
+    timerInterval = setInterval(tickTimer, 1000);
+  }
+  function stopTimer(){
+    if (timerInterval){ clearInterval(timerInterval); timerInterval = null; }
+  }
+  function tickTimer(){
+    if (!session) return;
+    var elapsed = Math.floor((Date.now()-session.startedAt)/1000);
+    var m = Math.floor(elapsed/60), s = elapsed%60;
+    document.getElementById("timerTxt").lastChild.textContent = " " + m + ":" + pad(s);
+  }
+
+  function imgTag(filename){
+    var img = document.createElement("img");
+    img.className = "card-img";
+    img.src = "images/" + filename;
+    img.alt = "Afbeelding bij deze vraag";
+    img.loading = "eager";
+    return img;
+  }
+
+  function missingNotice(){
+    var div = document.createElement("div");
+    div.className = "img-missing";
+    div.innerHTML =
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16.3" r="0.2" fill="currentColor"/></svg>' +
+      '<span>Afbeelding ontbreekt in het brondocument.</span>';
+    return div;
+  }
+
+  function showCurrentCard(){
+    if (!session) return;
+    if (session.index >= session.queue.length){
+      endSession();
+      return;
+    }
+    var card = session.queue[session.index];
+
+    document.getElementById("studyProgressTxt").textContent =
+      session.clearedCount + " / " + session.total + " juist";
+    document.getElementById("progressFill").style.width =
+      Math.round(100*session.clearedCount/session.total) + "%";
+
+    document.getElementById("cardQ").textContent = card.q;
+
+    var qWrap = document.getElementById("qImgWrap");
+    qWrap.innerHTML = "";
+    (card.qImg||[]).forEach(function(f){ qWrap.appendChild(imgTag(f)); });
+    if (card.qImgMissing > 0){ qWrap.appendChild(missingNotice()); }
+
+    document.getElementById("recallInput").value = "";
+    document.getElementById("recallBox").hidden = false;
+
+    var aWrap = document.getElementById("aImgWrap");
+    aWrap.innerHTML = "";
+    (card.aImg||[]).forEach(function(f){ aWrap.appendChild(imgTag(f)); });
+    if (card.aImgMissing > 0){ aWrap.appendChild(missingNotice()); }
+    document.getElementById("cardA").textContent = card.a;
+
+    document.getElementById("answerWrap").hidden = true;
+    document.getElementById("revealBtn").hidden = false;
+    document.getElementById("gradeRow").hidden = true;
+  }
+
+  function revealAnswer(){
+    document.getElementById("answerWrap").hidden = false;
+    document.getElementById("revealBtn").hidden = true;
+    document.getElementById("gradeRow").hidden = false;
+  }
+
+  function grade(isCorrect){
+    var card = session.queue[session.index];
+
+    if (isCorrect){
+      if (!session.cleared[card.id]){
+        session.cleared[card.id] = true;
+        session.clearedCount++;
+      }
+    } else {
+      session.mistakeIds[card.id] = (session.mistakeIds[card.id]||0) + 1;
+      var pos = Math.min(session.index + REQUEUE_OFFSET, session.queue.length);
+      session.queue.splice(pos, 0, card);
+    }
+
+    session.index++;
+    showCurrentCard();
+  }
+
+  function endSession(){
+    stopTimer();
+    var minutes = Math.max(1, Math.round((Date.now()-session.startedAt)/60000));
+    var firstTry = session.total - Object.keys(session.mistakeIds).length;
+
+    document.getElementById("endTotal").textContent = session.total;
+    document.getElementById("endFirstTry").textContent = firstTry;
+    document.getElementById("endMinutes").textContent = minutes;
+
+    var sub = document.getElementById("endSub");
+    if (Object.keys(session.mistakeIds).length === 0){
+      sub.textContent = "Alles in één keer juist. Knap gedaan!";
+    } else {
+      sub.textContent = "Alle " + session.total + " vragen van hoofdstuk " + session.chapter.num + " zijn nu juist beantwoord.";
+    }
+
+    studyScreen.hidden = true;
+    endScreen.hidden = false;
+  }
+
+  function retrySameChapter(){
+    if (!session) return;
+    startChapter(session.chapter);
+  }
+
+  function backToHome(){
+    stopTimer();
+    session = null;
+    studyScreen.hidden = true;
+    endScreen.hidden = true;
+    homeScreen.hidden = false;
+  }
+
+  document.getElementById("revealBtn").addEventListener("click", revealAnswer);
+  document.getElementById("wrongBtn").addEventListener("click", function(){ grade(false); });
+  document.getElementById("rightBtn").addEventListener("click", function(){ grade(true); });
+  document.getElementById("stopBtn").addEventListener("click", backToHome);
+  document.getElementById("retryBtn").addEventListener("click", retrySameChapter);
+  document.getElementById("backBtn").addEventListener("click", backToHome);
+
+  buildHome();
+})();
+</script>
+
+</body>
+</html>
